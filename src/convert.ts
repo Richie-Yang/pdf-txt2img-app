@@ -1,6 +1,7 @@
 import * as pdfjs from 'pdfjs';
 import * as fs from 'fs';
 import * as ProgressBar from 'progress';
+import * as path from 'path';
 import { PDFDocument } from 'pdf-lib';
 import { fromBuffer } from 'pdf2pic';
 import { ConvertResult } from './types';
@@ -39,7 +40,7 @@ export async function convertPDF(
   const options = {
     density: 100 * qualityMultiplier,
     saveFilename: 'file',
-    savePath: './temp',
+    savePath: path.join(__dirname, '../temp'),
     format: FORMAT,
     width: width * qualityMultiplier,
     height: height * qualityMultiplier,
@@ -54,7 +55,7 @@ export async function convertPDF(
     for (let i = 1; i <= pageCount; i++) {
       bar.tick();
       await storeAsImage(i);
-      outputFilePath = `./temp/file.${i}.${FORMAT}`;
+      outputFilePath = path.join(__dirname, `../temp/file.${i}.${FORMAT}`);
       const buffer = fs.readFileSync(outputFilePath);
       const pdfImage = new pdfjs.Image(buffer);
       cell.image(pdfImage);
