@@ -44,12 +44,14 @@ router.post(
   async (ctx: Koa.Context) => {
     const content = ctx.request.file;
     const { responseType, quality } = ctx.request.body as ConvertRequest;
+    if (!quality || Number.isNaN(Number(quality)))
+      return respondError(ctx, 'invalid quality!');
     if (!content?.buffer || !content?.mimetype)
       return respondError(ctx, 'no file uploaded!');
     if (content.mimetype !== 'application/pdf')
       return respondError(ctx, 'file is not a pdf!');
 
-    const res = await convertPDF(content.buffer, quality);
+    const res = await convertPDF(content.buffer, Number(quality));
 
     switch (responseType) {
       case DataType.BUFFER:

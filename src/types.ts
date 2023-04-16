@@ -6,7 +6,7 @@ export type AnyObject<T = any> = {
 
 export type ConvertRequest = {
   responseType: DataType;
-  quality: number;
+  quality: string;
 };
 
 export type ConvertResult = {
